@@ -15,12 +15,12 @@ public class Customer {
 
     @Id
     @SequenceGenerator(
-            name = "result_id_sequence",
-            sequenceName = "result_id_sequence"
+            name = "customer_id_sequence",
+            sequenceName = "customer_id_sequence"
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "result_id_sequence"
+            generator = "customer_id_sequence"
     )
     private Long id;
     private String firstName;

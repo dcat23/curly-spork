@@ -19,6 +19,7 @@
 	<url>https://www.macchiato.life</url>
 	<modules>
 		<module>customer</module>
+		<module>repair</module>
 	</modules>
 
 	<properties>
