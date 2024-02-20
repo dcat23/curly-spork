@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### GOOGLE ###
+tokens
+**/client_secret.json
