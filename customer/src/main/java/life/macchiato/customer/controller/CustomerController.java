@@ -2,7 +2,6 @@ package life.macchiato.customer.controller;
 
 import life.macchiato.customer.dto.CustomerRegistrationRequest;
 import life.macchiato.customer.services.CustomerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ public class CustomerController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerCustomer(@RequestBody CustomerRegistrationRequest request) {
+        log.info("New customer registration {}", request);
         customerService.registerCustomer(request);
         return ResponseEntity.status(200).body("Registered: " + request);
     }

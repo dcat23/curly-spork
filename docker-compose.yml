@@ -34,13 +34,12 @@ services:
     restart: unless-stopped
 
   customer:
-    image: macchiato23/ulamp-customer:latest
+    image: macchiato23/ul-customer:latest
     container_name: customer
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/looder
     networks:
 #      - spring
       - postgres

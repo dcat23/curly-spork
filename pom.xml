@@ -24,7 +24,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring.boot.version>3.2.2</spring.boot.version>
-		<image>macchiato23/ulamp-${project.artifactId}:${project.version}</image>
+		<image>macchiato23/ul-${project.artifactId}:${project.version}</image>
 	</properties>
 
 	<dependencyManagement>
