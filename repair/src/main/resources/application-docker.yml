@@ -1,22 +1,19 @@
 server:
-  port: 8081
+  port: 8080
 
 
 spring:
   application:
     name: repair
-  sql:
-    init:
-      mode: always
 
   datasource:
     username: ${POSTGRES_USER:dcat}
     password: ${POSTGRES_PASSWORD:password}
-    url: jdbc:postgresql://localhost:5432/repair
+    url: jdbc:postgresql://postgres:5432/repair
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
