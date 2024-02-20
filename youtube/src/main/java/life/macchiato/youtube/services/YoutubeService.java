@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -103,4 +104,12 @@ public class YoutubeService {
                 .build();
     }
 
+    public String testTokens() {
+        String dir = System.getProperty("user.dir");
+        String credPath = "tokens/path";
+        File credential = new File(credPath);
+        log.info("cred? {} dir {}", credential.exists(), dir);
+
+        return "absolute: " + credential.getAbsolutePath();
+    }
 }

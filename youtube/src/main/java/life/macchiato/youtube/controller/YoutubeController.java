@@ -31,4 +31,10 @@ public class YoutubeController {
         return ResponseEntity.status(201)
                 .body(youtubeService.searchList(request));
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test ()
+    {
+        return ResponseEntity.status(200).body(youtubeService.testTokens());
+    }
 }
