@@ -1,5 +1,7 @@
 package life.macchiato.youtube.controller;
 
+import life.macchiato.youtube.models.SearchQuery;
+import life.macchiato.youtube.models.SearchResponse;
 import life.macchiato.youtube.services.YoutubeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +24,11 @@ public class YoutubeController {
         return ResponseEntity.status(200).body("What's up there?");
     }
 
-//    @PostMapping("/info")
-//    public ResponseEntity<SearchResponse> searchList(@RequestBody SearchQuery request)
-//    {
-//        log.info("New info request {}", request);
-//        return ResponseEntity.status(201)
-//                .body(youtubeService.searchList(request));
-//    }
+    @PostMapping("/info")
+    public ResponseEntity<SearchResponse> searchList(@RequestBody SearchQuery request)
+    {
+        log.info("New info request {}", request);
+        return ResponseEntity.status(201)
+                .body(youtubeService.searchList(request));
+    }
 }
