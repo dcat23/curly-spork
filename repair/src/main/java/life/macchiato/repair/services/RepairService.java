@@ -22,7 +22,7 @@ public class RepairService {
 
     public void createRepair(CreateRepairRequest request) {
         Repair repair = Repair.builder()
-                .customerId(request.customerId())
+                .youtubeId(request.youtubeId())
                 .deviceName(request.deviceName())
                 .laborCost(request.laborCost())
                 .description(request.description())

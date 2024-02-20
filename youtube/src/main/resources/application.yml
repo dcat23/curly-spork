@@ -4,12 +4,12 @@ server:
 
 spring:
   application:
-    name: customer
+    name: youtube
 
   datasource:
     username: ${POSTGRES_USER:dcat}
     password: ${POSTGRES_PASSWORD:password}
-    url: jdbc:postgresql://localhost:5432/customer
+    url: jdbc:postgresql://localhost:5432/youtube
 
   jpa:
     hibernate:

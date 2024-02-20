@@ -1,10 +1,10 @@
-package life.macchiato.customer;
+package life.macchiato.youtube;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CustomerApplicationTests {
+class YoutubeApplicationTests {
 
     @Test
     void contextLoads() {

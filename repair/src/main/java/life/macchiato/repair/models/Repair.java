@@ -28,7 +28,7 @@ public class Repair {
     private Long id;
     @Enumerated
     private RepairStatus status;
-    private Long customerId;
+    private Long youtubeId;
     private String deviceName;
     private String description;
     private Double laborCost;

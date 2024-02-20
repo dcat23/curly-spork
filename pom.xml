@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>life.macchiato</groupId>
-	<artifactId>UpgradedLamp</artifactId>
+	<artifactId>CurlySpork</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<description>UpgradedLamp</description>
+	<description>CurlySpork</description>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -15,17 +15,16 @@
 		<version>3.2.2</version>
 	</parent>
 
-	<name>UpgradedLamp</name>
+	<name>CurlySpork</name>
 	<url>https://www.macchiato.life</url>
 	<modules>
-		<module>customer</module>
-		<module>repair</module>
+		<module>youtube</module>
 	</modules>
 
 	<properties>
 		<java.version>17</java.version>
 		<spring.boot.version>3.2.2</spring.boot.version>
-		<image>macchiato23/ul-${project.artifactId}:${project.version}</image>
+		<image>macchiato23/cs-${project.artifactId}:${project.version}</image>
 	</properties>
 
 	<dependencyManagement>

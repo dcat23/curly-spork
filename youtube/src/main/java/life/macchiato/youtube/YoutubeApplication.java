@@ -1,13 +1,13 @@
-package life.macchiato.customer;
+package life.macchiato.youtube;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CustomerApplication {
+public class YoutubeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CustomerApplication.class, args);
+        SpringApplication.run(YoutubeApplication.class, args);
     }
 
 }

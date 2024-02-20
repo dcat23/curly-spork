@@ -5,11 +5,11 @@
 
     <parent>
         <groupId>life.macchiato</groupId>
-        <artifactId>UpgradedLamp</artifactId>
+        <artifactId>CurlySpork</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>customer</artifactId>
+    <artifactId>youtube</artifactId>
 
     <properties>
         <java.version>17</java.version>
