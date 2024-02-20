@@ -1,0 +1,137 @@
+version: "3"
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dcat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: customer
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  customer:
+    image: macchiato23/ulamp-customer:latest
+    container_name: customer
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/looder
+    networks:
+#      - spring
+      - postgres
+    depends_on:
+#      - zipkin
+      - postgres
+
+#  zipkin:
+#    image: openzipkin/zipkin
+#    container_name: zipkin
+#    ports:
+#      - "9411:9411"
+#    networks:
+#      - spring
+
+#  eureka-server:
+#    image: macchiato23/fs-eureka-server:latest
+#    container_name: eureka-server
+#    ports:
+#      - "8761:8761"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
+
+#  apigw:
+#    image: macchiato23/fs-apigw:latest
+#    container_name: apigw
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
+#      - eureka-server
+
+#  youtube:
+#    image: macchiato23/fs-youtube:latest
+#    container_name: youtube
+#    ports:
+#      - "8082:8080"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/looder
+#    networks:
+#      - spring
+#      - postgres
+#    depends_on:
+#      - zipkin
+#      - postgres
+
+
+  #  fraud:
+  #    image: macchiato23/fs-fraud:latest
+  #    container_name: fraud
+  #    ports:
+  #      - "8081:8081"
+  #    environment:
+  #      - SPRING_PROFILES_ACTIVE=docker
+  #    networks:
+  #      - spring
+  #      - postgres
+  #    depends_on:
+  #      - zipkin
+  #      - postgres
+  #      - rabbitmq
+  #  notification:
+  #    image: macchiato23/fs-notification:latest
+  #    container_name: notification
+  #    ports:
+  #      - "8082:8082"
+  #    environment:
+  #      - SPRING_PROFILES_ACTIVE=docker
+  #    networks:
+  #      - spring
+  #      - postgres
+  #    depends_on:
+  #      - zipkin
+  #      - postgres
+  #      - rabbitmq
+
+networks:
+  postgres:
+    driver: bridge
+#  spring:
+#    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
