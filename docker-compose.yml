@@ -37,7 +37,7 @@ services:
     image: macchiato23/cs-youtube:latest
     container_name: youtube
     ports:
-      - "8081:8080"
+      - "8080:8080"
     volumes:
       - ./tokens:/tokens
     environment:
