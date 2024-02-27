@@ -113,4 +113,10 @@ public class YoutubeService {
 
         return "absolute: " + credential.getAbsolutePath();
     }
+
+    public String findByTitle(String title) {
+        queryRepo.findByValue(title);
+
+        return null;
+    }
 }

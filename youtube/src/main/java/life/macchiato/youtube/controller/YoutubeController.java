@@ -37,4 +37,10 @@ public class YoutubeController {
     {
         return ResponseEntity.status(200).body(youtubeService.testTokens());
     }
+
+    @GetMapping("/video")
+    public ResponseEntity<String> findByTitle (@PathVariable String title)
+    {
+        return ResponseEntity.status(200).body(youtubeService.findByTitle(title));
+    }
 }

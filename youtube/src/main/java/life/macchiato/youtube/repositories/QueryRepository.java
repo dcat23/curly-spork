@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface QueryRepository extends JpaRepository<SearchQuery, Long> {
     Optional<SearchQuery> findByValueAndPageToken(@Param("value") String value, @Param("pageToken") String pageToken);
 
+    Optional<SearchQuery> findByValue(String value);
 }
