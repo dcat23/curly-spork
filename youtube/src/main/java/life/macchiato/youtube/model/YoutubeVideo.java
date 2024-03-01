@@ -1,37 +1,24 @@
 package life.macchiato.youtube.model;
 
-import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.model.SearchResult;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import lombok.ToString;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor
 public class YoutubeVideo extends YoutubeItem {
 
     private static final String baseUrl = "https://www.youtube.com/watch?v=";
 
-    private LocalDateTime publishDate;
-
     public YoutubeVideo(builder b) {
         super(b);
-        publishDate = b.publishDate;
     }
 
     public static class builder extends YoutubeItem.builder<builder, YoutubeVideo> {
-        private LocalDateTime publishDate;
-
-        public builder publishDate(DateTime publishedAt) {
-            Instant instant = Instant.ofEpochMilli(publishedAt.getValue());
-            publishDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-            return this;
-        }
 
         @Override
         protected builder self() {

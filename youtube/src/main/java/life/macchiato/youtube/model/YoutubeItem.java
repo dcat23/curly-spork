@@ -1,9 +1,13 @@
 package life.macchiato.youtube.model;
 
+import com.google.api.client.util.DateTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 @Entity
@@ -20,12 +24,14 @@ public abstract class YoutubeItem {
     String title;
     String itemId;
     String thumbnail;
+    LocalDateTime publishDate;
 
     YoutubeItem(builder<?,?> b) {
         url = b.url;
         title = b.title;
         itemId = b.itemId;
         thumbnail = b.thumbnail;
+        publishDate = b.publishDate;
     }
 
     abstract static class builder<
@@ -36,6 +42,8 @@ public abstract class YoutubeItem {
         private String title;
         private String itemId;
         private String thumbnail;
+        private LocalDateTime publishDate;
+
 
         public builder() {}
 
@@ -53,6 +61,11 @@ public abstract class YoutubeItem {
         }
         public B itemId(String val) {
             itemId = Objects.requireNonNull(val);
+            return self();
+        }
+        public B publishDate(DateTime publishedAt) {
+            Instant instant = Instant.ofEpochMilli(publishedAt.getValue());
+            publishDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
             return self();
         }
 
