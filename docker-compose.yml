@@ -67,7 +67,6 @@ services:
       - zipkin
       - postgres
 
-
   #  notification:
   #    image: macchiato23/notification:latest
   #    container_name: notification
