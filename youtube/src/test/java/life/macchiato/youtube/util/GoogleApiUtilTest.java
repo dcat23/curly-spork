@@ -1,4 +1,4 @@
-package life.macchiato.youtube.utils;
+package life.macchiato.youtube.util;
 
 import static org.assertj.core.api.Assertions.*;
 

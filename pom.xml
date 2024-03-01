@@ -5,7 +5,7 @@
 
 	<groupId>life.macchiato</groupId>
 	<artifactId>CurlySpork</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<description>CurlySpork</description>
 	<packaging>pom</packaging>
 
@@ -55,6 +55,11 @@
 			<artifactId>assertj-core</artifactId>
 			<version>3.4.1</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
