@@ -11,7 +11,7 @@ import java.security.GeneralSecurityException;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/media")
+@RequestMapping("/api/v1/youtube")
 public class MediaController {
 
     MediaService mediaService;
@@ -25,7 +25,7 @@ public class MediaController {
         return ResponseEntity.status(200).body("hello");
     }
 
-    @GetMapping("/youtube")
+    @GetMapping("/info")
     @ResponseBody
     public ResponseEntity<?> youtubeInfo(@RequestParam(name = "title") String videoTitle) {
 

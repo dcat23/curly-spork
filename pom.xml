@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
+		<version>3.2.3</version>
 	</parent>
 
 	<name>CurlySpork</name>
@@ -23,9 +23,9 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spring.boot.version>3.2.2</spring.boot.version>
+		<spring.boot.version>3.2.3</spring.boot.version>
 		<spring.cloud.version>2023.0.0</spring.cloud.version>
-		<spring.cloud.gateway.version>4.1.0</spring.cloud.gateway.version>
+		<spring.cloud.gateway.version>4.1.1</spring.cloud.gateway.version>
 		<image>macchiato23/${project.artifactId}:curly-spork-${project.version}</image>
 	</properties>
 
@@ -71,11 +71,6 @@
 			<artifactId>assertj-core</artifactId>
 			<version>3.4.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
