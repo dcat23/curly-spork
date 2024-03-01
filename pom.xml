@@ -17,9 +17,6 @@
 
 	<name>CurlySpork</name>
 	<url>https://github.com/dcat23/curly-spork</url>
-	<modules>
-		<module>youtube</module>
-	</modules>
 
 	<properties>
 		<java.version>17</java.version>
@@ -118,5 +115,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 </project>
