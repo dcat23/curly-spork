@@ -17,74 +17,28 @@ services:
     networks:
       - postgres
     restart: unless-stopped
-
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
     ports:
-      - "5050:80"
+      - "9411:9411"
     networks:
-      - postgres
-    restart: unless-stopped
+      - spring
 
-  youtube:
-    image: macchiato23/cs-youtube:latest
-    container_name: youtube
+  eureka-server:
+    image: macchiato23/eureka-server:latest
+    container_name: eureka-server
     ports:
-      - "8080:8080"
-    volumes:
-      - ./tokens:/tokens
+      - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
-#      - spring
-      - postgres
+      - spring
     depends_on:
-#      - zipkin
-      - postgres
-
-#  repair:
-#    image: macchiato23/cs-repair:latest
-#    container_name: repair
-#    ports:
-#      - "8081:8080"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    networks:
-#      #      - spring
-#      - postgres
-#    depends_on:
-#      #      - zipkin
-#      - postgres
-
-#  zipkin:
-#    image: openzipkin/zipkin
-#    container_name: zipkin
-#    ports:
-#      - "9411:9411"
-#    networks:
-#      - spring
-
-#  eureka-server:
-#    image: macchiato23/fs-eureka-server:latest
-#    container_name: eureka-server
-#    ports:
-#      - "8761:8761"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    networks:
-#      - spring
-#    depends_on:
-#      - zipkin
+      - zipkin
 
 #  apigw:
-#    image: macchiato23/fs-apigw:latest
+#    image: macchiato23/apigw:latest
 #    container_name: apigw
 #    ports:
 #      - "8080:8080"
@@ -112,22 +66,8 @@ services:
 #      - postgres
 
 
-  #  fraud:
-  #    image: macchiato23/fs-fraud:latest
-  #    container_name: fraud
-  #    ports:
-  #      - "8081:8081"
-  #    environment:
-  #      - SPRING_PROFILES_ACTIVE=docker
-  #    networks:
-  #      - spring
-  #      - postgres
-  #    depends_on:
-  #      - zipkin
-  #      - postgres
-  #      - rabbitmq
   #  notification:
-  #    image: macchiato23/fs-notification:latest
+  #    image: macchiato23/notification:latest
   #    container_name: notification
   #    ports:
   #      - "8082:8082"
@@ -144,9 +84,8 @@ services:
 networks:
   postgres:
     driver: bridge
-#  spring:
-#    driver: bridge
+  spring:
+    driver: bridge
 
 volumes:
   postgres:
-  pgadmin:

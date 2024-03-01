@@ -5,7 +5,7 @@
 
 	<groupId>life.macchiato</groupId>
 	<artifactId>CurlySpork</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<description>CurlySpork</description>
 	<packaging>pom</packaging>
 
@@ -16,7 +16,7 @@
 	</parent>
 
 	<name>CurlySpork</name>
-	<url>https://www.macchiato.life</url>
+	<url>https://github.com/dcat23/curly-spork</url>
 	<modules>
 		<module>youtube</module>
 	</modules>
@@ -24,7 +24,9 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring.boot.version>3.2.2</spring.boot.version>
-		<image>macchiato23/cs-${project.artifactId}:${project.version}</image>
+		<spring.cloud.version>2023.0.0</spring.cloud.version>
+		<spring.cloud.gateway.version>4.1.0</spring.cloud.gateway.version>
+		<image>macchiato23/${project.artifactId}:curly-spork-${project.version}</image>
 	</properties>
 
 	<dependencyManagement>
@@ -33,6 +35,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
 				<version>${spring.boot.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-gateway-dependencies</artifactId>
+				<version>${spring.cloud.gateway.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>
