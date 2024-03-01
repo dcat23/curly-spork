@@ -17,6 +17,7 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -37,21 +38,21 @@ services:
     depends_on:
       - zipkin
 
-#  apigw:
-#    image: macchiato23/apigw:latest
-#    container_name: apigw
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=docker
-#    networks:
-#      - spring
-#    depends_on:
-#      - zipkin
-#      - eureka-server
+  apigw:
+    image: macchiato23/apigw:curly-spork-0.0.2
+    container_name: apigw
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - zipkin
+      - eureka-server
 
 #  youtube:
-#    image: macchiato23/fs-youtube:latest
+#    image: macchiato23/youtube:curly-spork-0.0.1
 #    container_name: youtube
 #    ports:
 #      - "8082:8080"

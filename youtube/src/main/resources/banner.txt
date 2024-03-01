@@ -6,4 +6,4 @@
   |______|'.__.' '.__.'_/\__/ '.__.'_[__;.__.' '.__.'
 
 ${application.title} ${application.version}
-Powered by Spring Boot ${spring-boot.version}Banner: Varsity
+Powered by Spring Boot ${spring-boot.version} [Banner: Varsity]

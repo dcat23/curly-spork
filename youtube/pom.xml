@@ -10,6 +10,8 @@
     </parent>
 
     <artifactId>youtube</artifactId>
+    <name>Youtube</name>
+    <description>Spring boot wrapper for the Youtube API</description>
 
     <properties>
         <java.version>17</java.version>
