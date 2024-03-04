@@ -1,10 +1,10 @@
-package life.macchiato.ytdlp;
+package life.macchiato.media;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class YtdlpApplicationTests {
+class MediaApplicationTests {
 
     @Test
     void contextLoads() {

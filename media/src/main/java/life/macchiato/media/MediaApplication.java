@@ -1,13 +1,13 @@
-package life.macchiato.ytdlp;
+package life.macchiato.media;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class YtdlpApplication {
+public class MediaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(YtdlpApplication.class, args);
+        SpringApplication.run(MediaApplication.class, args);
     }
 
 }

@@ -1,19 +1,18 @@
 server:
-  port: 0
-
+  port: 8080
 
 spring:
   application:
-    name: ytdlp
+    name: media
 
   datasource:
     username: ${POSTGRES_USER:dcat}
     password: ${POSTGRES_PASSWORD:password}
-    url: jdbc:postgresql://localhost:5432/youtube
+    url: jdbc:postgresql://postgres:5432/youtube
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -23,7 +22,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka-server:8761/eureka
 
   instance:
     instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
@@ -32,4 +31,3 @@ management:
   tracing:
     sampling:
       probability: 1.0
-
