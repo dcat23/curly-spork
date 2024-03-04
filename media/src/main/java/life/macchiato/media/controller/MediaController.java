@@ -23,7 +23,6 @@ public class MediaController {
     }
 
     @GetMapping("/status/{fileId}")
-    @ResponseBody
     public ResponseEntity<?> status(@PathVariable long fileId) {
         try {
             return ResponseEntity.status(HttpStatus.FOUND).body(mediaService.status(fileId));

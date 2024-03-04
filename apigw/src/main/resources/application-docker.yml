@@ -12,6 +12,12 @@ spring:
               - Path=/youtube/**
             filters:
               - PrefixPath=/api/v1
+          - id: media
+            uri: lb://MEDIA
+            predicates:
+              - Path=/media/**
+            filters:
+              - PrefixPath=/api/v1
 management:
   zipkin:
     tracing:

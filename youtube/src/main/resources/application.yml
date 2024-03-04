@@ -29,6 +29,9 @@ eureka:
     instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
 
 management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
   tracing:
     sampling:
       probability: 1.0

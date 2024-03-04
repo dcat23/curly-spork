@@ -12,15 +12,20 @@ spring:
               - Path=/youtube/**
             filters:
               - PrefixPath=/api/v1
+          - id: media
+            uri: lb://MEDIA
+            predicates:
+              - Path=/media/**
+            filters:
+              - PrefixPath=/api/v1
 
 management:
   zipkin:
     tracing:
-      endpoint: http://localhost:9412/api/v2/spans
+      endpoint: http://localhost:9411/api/v2/spans
   tracing:
     sampling:
       probability: 1.0
-
 
 eureka:
   client:
@@ -28,7 +33,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
-
 
 logging:
   level:
