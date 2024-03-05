@@ -18,8 +18,6 @@ public class Progress implements DownloadProgressCallback {
 
     public Progress() {
         start = Instant.now();
-        progress = 0;
-        eta = 0;
         log.info("Tracking progress");
     }
 
@@ -31,7 +29,8 @@ public class Progress implements DownloadProgressCallback {
         if (progress == 0) return;
         if (progress == 100)
         {
-            log.info("Download complete");
+            int instant = start.compareTo(Instant.now());
+            log.info("Download complete in {}ms", instant);
         }
 
 

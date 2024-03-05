@@ -2,6 +2,8 @@ package life.macchiato.media.service;
 
 import com.jfposton.ytdlp.*;
 import com.jfposton.ytdlp.mapper.VideoInfo;
+import jakarta.annotation.Nullable;
+import jakarta.transaction.Transactional;
 import life.macchiato.media.dto.MediaRequest;
 import life.macchiato.media.dto.DownloadStatus;
 import life.macchiato.media.exception.ResourceNotFound;
@@ -13,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 import static life.macchiato.media.dto.DownloadStatus.*;
 
@@ -29,17 +31,30 @@ public class MediaServiceImpl implements MediaService {
     MediaRepository mediaRepository;
 
     @Override
-    public DownloadStatus status(long id) throws ResourceNotFound {
+    public Media status(long id) throws ResourceNotFound {
         Optional<Media> byId = mediaRepository.findById(id);
         if (byId.isEmpty()) {
-            throw new ResourceNotFound("Resource with id {} not found");
+            throw new ResourceNotFound(String.format("Resource with id %d not found", id));
         }
-        return byId.get().getStatus();
+        return byId.get();
     }
 
+//    @Override
+//    public List<Media> allByStatus(@Nullable DownloadStatus status) {
+//        List<Media> allMedia;
+//        if (status == null)
+//        {
+//            allMedia = mediaRepository.findAll();
+//        } else {
+//            allMedia = mediaRepository.findAllByStatus(status);
+//        }
+//
+//        return allMedia;
+//    }
+
+
     @Override
-    @Async("downloadExecutor")
-    public CompletableFuture<Media> requestVideo(MediaRequest request) throws Exception {
+    public Media requestVideo(MediaRequest request) throws Exception {
         log.info("Looking up media {}", request);
 
         URL url =  new URL(request.url());
@@ -53,7 +68,14 @@ public class MediaServiceImpl implements MediaService {
         }
         else {
             log.info("fetching video info");
-            VideoInfo v = YtDlp.getVideoInfo(url.toString());
+
+            VideoInfo v;
+            try {
+                v = YtDlp.getVideoInfo(url.toString());
+            } catch (YtDlpException e) {
+                throw new RuntimeException(e);
+            }
+
 
             String title = StringUtils.getFilename(v.getTitle());
 
@@ -66,61 +88,34 @@ public class MediaServiceImpl implements MediaService {
                     .build();
         }
 
+        mediaRepository.save(media);
+        return media;
+    }
+
+    @Override
+    @Transactional
+    @Async("downloadExecutor")
+    public void execute(Media media)  {
+
         switch (media.getStatus())
         {
             case COMPLETE:
             case IN_PROGRESS:
                 log.info("status: {}", media.getStatus());
-                return CompletableFuture.completedFuture(media);
+                return;
         }
 
+        media.setStatus(IN_PROGRESS);
         mediaRepository.save(media);
 
-        log.info("saved {}", media);
-
-        try {
-            media.setStatus(IN_PROGRESS);
-            mediaRepository.flush();
-            Downloader download = new Downloader.builder(media.getUrl())
+        Downloader download = new Downloader.builder(media.getUrl())
+                .directory("tmp", media.getVideoId())
                 .format(media.getExt())
-                .directory("tmp",
-                        media.getExt(),
-                        media.getVideoId())
                 .build();
 
-            download.execute();
-            media.setStatus(COMPLETE);
-
-        } catch (Exception e) {
-            media.setStatus(IN_PROGRESS);
-            e.printStackTrace();
-        }
-
-
-        mediaRepository.saveAndFlush(media);
-        return CompletableFuture.completedFuture(media);
+        download.execute();
+        media.setStatus(COMPLETE);
+        mediaRepository.save(media);
     }
 
-    @Async("downloadExecutor")
-    public void download(Media media) throws Exception {
-//        log.info("Download executor");
-
-//        Downloader download = new Downloader.builder(media.getOriginUrl())
-//                .directory(
-//                        "download",
-//                        media.getExt(),
-//                        String.valueOf(media.getId()))
-//                .format(media.getExt())
-//                .build();
-//
-//        YtDlpRequest downloadRequest = new YtDlpRequest(media.getOriginUrl(), outputPath);
-//        downloadRequest.setOption("format", media.getExt());
-//
-//        log.info("Starting download {}", downloadRequest.getDirectory());
-//
-//        YtDlpResponse response = YtDlp.execute(downloadRequest, null, (v, l) -> log.info("progress {} - {}", v, media.getName()));
-//
-//
-//        log.info(response.getOut());
-    }
 }
