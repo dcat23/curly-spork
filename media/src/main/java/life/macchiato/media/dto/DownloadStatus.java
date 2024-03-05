@@ -1,4 +1,4 @@
 package life.macchiato.media.dto;
 
-public record DownloadStatus() {
+public record DownloadStatus(String threadName) {
 }
