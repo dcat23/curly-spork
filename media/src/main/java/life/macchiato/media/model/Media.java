@@ -2,6 +2,7 @@ package life.macchiato.media.model;
 
 import com.jfposton.ytdlp.mapper.VideoInfo;
 import jakarta.persistence.*;
+import life.macchiato.media.dto.DownloadStatus;
 import lombok.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,11 +20,8 @@ public class Media {
     private String ext;
     private String videoId;
     @Column(unique = true)
-    private String originUrl;
-    private String thread;
+    private String url;
+    @Enumerated
+    private DownloadStatus status;
 
-    public static Media from(VideoInfo videoInfo) {
-        return Media.builder()
-                .build();
-    }
 }

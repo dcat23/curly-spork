@@ -1,4 +1,8 @@
 package life.macchiato.media.dto;
 
-public record DownloadStatus(String threadName) {
+public enum DownloadStatus{
+    NOT_STARTED,
+    IN_PROGRESS,
+    COMPLETE,
+    UNKNOWN
 }

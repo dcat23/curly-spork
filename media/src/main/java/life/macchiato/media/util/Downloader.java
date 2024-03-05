@@ -45,7 +45,7 @@ public class Downloader {
         }
 
         public builder directory(String... pathSegments) {
-            String homeDir = System.getProperty("user.home");
+            String homeDir = System.getProperty("user.dir");
             String directory = UriComponentsBuilder.fromPath(homeDir)
                     .pathSegment(pathSegments)
                     .build()

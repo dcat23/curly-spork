@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface MediaRepository extends JpaRepository<Media, Long> {
 
-    Optional<Media> findByOriginUrl(String originUrl);
+    Optional<Media> findByUrl(String url);
 }

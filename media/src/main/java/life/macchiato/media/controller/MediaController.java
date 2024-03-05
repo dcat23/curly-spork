@@ -2,6 +2,7 @@ package life.macchiato.media.controller;
 
 import com.jfposton.ytdlp.YtDlpException;
 import life.macchiato.media.dto.MediaRequest;
+import life.macchiato.media.exception.ResourceNotFound;
 import life.macchiato.media.service.MediaService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +26,9 @@ public class MediaController {
     }
 
     @GetMapping("/status/{fileId}")
-    public ResponseEntity<?> status(@PathVariable long fileId) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(mediaService.status(fileId));
-        } catch(Exception e) {
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
+    public ResponseEntity<?> status(@PathVariable long fileId) throws ResourceNotFound {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(mediaService.status(fileId));
     }
 
     @PostMapping("/request")
