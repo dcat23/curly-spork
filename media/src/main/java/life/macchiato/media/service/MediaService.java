@@ -1,14 +1,16 @@
 package life.macchiato.media.service;
 
 
-import com.jfposton.ytdlp.YtDlpException;
-import life.macchiato.media.dto.DownloadRequest;
+import life.macchiato.media.dto.MediaRequest;
 import life.macchiato.media.dto.DownloadStatus;
+import life.macchiato.media.model.Media;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public interface MediaService {
-    DownloadStatus status(long id);
+    CompletableFuture<DownloadStatus> status(long id);
 
-    void requestVideo(DownloadRequest request) throws YtDlpException;
+    CompletableFuture<Media> requestVideo(MediaRequest mediaRequest) throws Exception;
 }
