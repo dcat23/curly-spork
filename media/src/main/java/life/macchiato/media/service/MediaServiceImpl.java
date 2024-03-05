@@ -39,18 +39,18 @@ public class MediaServiceImpl implements MediaService {
         return byId.get();
     }
 
-//    @Override
-//    public List<Media> allByStatus(@Nullable DownloadStatus status) {
-//        List<Media> allMedia;
-//        if (status == null)
-//        {
-//            allMedia = mediaRepository.findAll();
-//        } else {
-//            allMedia = mediaRepository.findAllByStatus(status);
-//        }
-//
-//        return allMedia;
-//    }
+    @Override
+    public List<Media> allByStatus(@Nullable DownloadStatus status) {
+        List<Media> allMedia;
+        if (status == null)
+        {
+            allMedia = mediaRepository.findAll();
+        } else {
+            allMedia = mediaRepository.findAllByStatus(status);
+        }
+
+        return allMedia;
+    }
 
 
     @Override

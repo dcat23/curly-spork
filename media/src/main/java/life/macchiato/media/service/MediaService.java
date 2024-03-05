@@ -16,7 +16,7 @@ import java.util.List;
 public interface MediaService {
 
     Media status(long id) throws ResourceNotFound;
-//    List<Media> allByStatus(@Nullable DownloadStatus status);
+    List<Media> allByStatus(@Nullable DownloadStatus status);
 
     Media requestVideo(MediaRequest mediaRequest) throws Exception;
 

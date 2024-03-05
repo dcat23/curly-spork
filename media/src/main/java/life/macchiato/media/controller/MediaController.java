@@ -24,11 +24,11 @@ public class MediaController {
         return ResponseEntity.status(200).body("hello");
     }
 
-//    @GetMapping("/all")
-//    public ResponseEntity<?> statusAll(@RequestParam(required = false) DownloadStatus status) {
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(mediaService.allByStatus(status));
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<?> statusAll(@RequestParam(required = false) DownloadStatus status) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(mediaService.allByStatus(status));
+    }
     @GetMapping("/status/{id}")
     public ResponseEntity<?> status(@PathVariable(name = "id") long mediaId) throws ResourceNotFound {
         return ResponseEntity.status(HttpStatus.OK)
