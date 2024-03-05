@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "YOUTUBE_RESULT")
+@Table(name = "YOUTUBE_ITEM")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class YoutubeItem {
 

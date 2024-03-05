@@ -7,6 +7,5 @@ import java.util.Optional;
 
 
 public interface YoutubeItemRepository extends JpaRepository<YoutubeItem, Long> {
-
     Optional<YoutubeItem> findByItemId(String itemId);
 }
