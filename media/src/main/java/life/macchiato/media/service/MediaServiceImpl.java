@@ -73,6 +73,7 @@ public class MediaServiceImpl implements MediaService {
             try {
                 v = YtDlp.getVideoInfo(url.toString());
             } catch (YtDlpException e) {
+                System.out.println();
                 throw new RuntimeException(e);
             }
 

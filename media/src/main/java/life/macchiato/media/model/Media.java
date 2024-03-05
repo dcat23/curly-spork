@@ -1,10 +1,13 @@
 package life.macchiato.media.model;
 
-import com.jfposton.ytdlp.mapper.VideoInfo;
 import jakarta.persistence.*;
 import life.macchiato.media.dto.DownloadStatus;
 import lombok.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -23,5 +26,6 @@ public class Media {
     private String url;
     @Enumerated
     private DownloadStatus status;
-
+    @UpdateTimestamp
+    private LocalDateTime lastUpdatedAt;
 }
