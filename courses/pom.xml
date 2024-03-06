@@ -30,7 +30,6 @@
             <groupId>org.htmlunit</groupId>
             <artifactId>htmlunit</artifactId>
             <version>3.6.0</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
