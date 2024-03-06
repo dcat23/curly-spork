@@ -67,6 +67,22 @@ services:
       - zipkin
       - postgres
 
+  media:
+    image: macchiato23/media:latest
+    container_name: media
+    ports:
+      - "8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - downloads:/tmp
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - postgres
+
   #  notification:
   #    image: macchiato23/notification:latest
   #    container_name: notification
@@ -90,3 +106,4 @@ networks:
 
 volumes:
   postgres:
+  downloads:

@@ -128,7 +128,7 @@
 					<version>3.3.2</version>
 					<configuration>
 						<from>
-							<image>eclipse-temurin:17.0.10_7-jre</image>
+							<image>macchiato23/21-jre-alpine:ytdlp</image>
 							<platforms>
 								<platform>
 									<architecture>arm64</architecture>
