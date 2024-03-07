@@ -5,6 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -21,4 +24,6 @@ public class Course {
     private String href;
     private String image;
     private String torrent;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

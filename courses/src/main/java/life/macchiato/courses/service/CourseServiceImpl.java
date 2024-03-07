@@ -9,11 +9,11 @@ import life.macchiato.courses.repository.SearchRepository;
 import life.macchiato.courses.util.FCOScraper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,7 +24,7 @@ public class CourseServiceImpl implements CourseService {
     SearchRepository searchRepo;
 
     @Override
-    public Set<Course> coursesFromSearch(Long searchId) throws ResourceNotFoundException {
+    public List<Course> coursesFromSearch(Long searchId) throws ResourceNotFoundException {
         Optional<Search> byId = searchRepo.findById(searchId);
         if (byId.isEmpty())
         {
@@ -32,6 +32,11 @@ public class CourseServiceImpl implements CourseService {
         }
 
         return byId.get().getCourses();
+    }
+
+    @Override
+    public List<Course> allCourses() {
+        return courseRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
     }
 
     @Override
@@ -44,12 +49,11 @@ public class CourseServiceImpl implements CourseService {
 
         try {
             FCOScraper scraper = new FCOScraper();
-            Set<Course> courses = scraper.findByName(courseRequest.name()).stream()
+            List<Course> courses = scraper.findByName(courseRequest.name()).stream()
                     .map((course) -> {
                         Optional<Course> courseByHref = courseRepo.findCourseByHref(course.getHref());
                         return courseByHref.orElse(course);
-                    })
-                    .collect(Collectors.toSet());
+                    }).toList();
 
             courseRepo.saveAll(courses);
             Search search = Search.builder()

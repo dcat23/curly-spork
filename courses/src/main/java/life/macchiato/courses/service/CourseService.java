@@ -6,11 +6,13 @@ import life.macchiato.courses.model.Course;
 import life.macchiato.courses.model.Search;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public interface CourseService {
-    Set<Course> coursesFromSearch(Long searchId) throws ResourceNotFoundException;
+    List<Course> coursesFromSearch(Long searchId) throws ResourceNotFoundException;
+    List<Course> allCourses();
 
     Search searchCourses(CourseRequest courseRequest);
+
 }

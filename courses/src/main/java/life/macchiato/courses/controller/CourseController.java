@@ -17,6 +17,11 @@ public class CourseController {
 
     CourseService courseService;
 
+    @GetMapping
+    ResponseEntity<?> allCourses() throws ResourceNotFoundException {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(courseService.allCourses());
+    }
     @GetMapping("/search/{id}")
     ResponseEntity<?> coursesFromSearch(@PathVariable(name = "id") Long searchId) throws ResourceNotFoundException {
             return ResponseEntity.status(HttpStatus.OK)

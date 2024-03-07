@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Builder
@@ -26,6 +26,6 @@ public class Search {
     private LocalDateTime updatedAt;
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "search_id", referencedColumnName = "id")
-    private Set<Course> courses;
+    private List<Course> courses;
 
 }
