@@ -39,7 +39,7 @@ services:
       - zipkin
 
   apigw:
-    image: macchiato23/apigw:curly-spork-0.0.2
+    image: macchiato23/apigw:curly-spork-0.0.3
     container_name: apigw
     ports:
       - "8080:8080"
@@ -75,13 +75,44 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     volumes:
-      - downloads:/tmp
+      - media:/tmp
     networks:
       - spring
       - postgres
     depends_on:
       - zipkin
       - postgres
+
+  courses:
+    image: macchiato23/courses:curly-spork-0.0.3
+    container_name: courses
+    ports:
+      - "8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - courses:/app/data
+    networks:
+      - spring
+      - postgres
+    depends_on:
+      - zipkin
+      - postgres
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
 
   #  notification:
   #    image: macchiato23/notification:latest
@@ -106,4 +137,6 @@ networks:
 
 volumes:
   postgres:
-  downloads:
+  pgadmin:
+  media:
+  courses:

@@ -18,6 +18,12 @@ spring:
               - Path=/media/**
             filters:
               - PrefixPath=/api/v1
+          - id: courses
+            uri: lb://COURSES
+            predicates:
+              - Path=/courses/**
+            filters:
+              - PrefixPath=/api/v1
 management:
   zipkin:
     tracing:

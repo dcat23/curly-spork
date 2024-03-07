@@ -5,7 +5,7 @@
 
 	<groupId>life.macchiato</groupId>
 	<artifactId>CurlySpork</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<description>CurlySpork</description>
 	<packaging>pom</packaging>
 
@@ -128,7 +128,7 @@
 					<version>3.3.2</version>
 					<configuration>
 						<from>
-							<image>macchiato23/21-jre-alpine:ytdlp</image>
+							<image>eclipse-temurin:21.0.2_13-jre-alpine</image>
 							<platforms>
 								<platform>
 									<architecture>arm64</architecture>
