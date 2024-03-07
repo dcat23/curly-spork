@@ -1,7 +1,7 @@
 package life.macchiato.courses.controller;
 
-
 import life.macchiato.courses.dto.CourseRequest;
+import life.macchiato.courses.exception.ResourceNotFoundException;
 import life.macchiato.courses.service.CourseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,17 +17,13 @@ public class CourseController {
 
     CourseService courseService;
 
-    @GetMapping("/{id}")
-    ResponseEntity<?> coursesFromSearch(@PathVariable(name = "id") Long searchId) {
-        try {
+    @GetMapping("/search/{id}")
+    ResponseEntity<?> coursesFromSearch(@PathVariable(name = "id") Long searchId) throws ResourceNotFoundException {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(courseService.coursesFromSearch(searchId));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
-    @PostMapping("/")
+    @PostMapping("/search")
     ResponseEntity<?> searchCourses(@RequestBody CourseRequest courseRequest) {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(courseService.searchCourses(courseRequest));
