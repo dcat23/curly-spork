@@ -18,7 +18,7 @@ public class CourseController {
     CourseService courseService;
 
     @GetMapping
-    ResponseEntity<?> allCourses() throws ResourceNotFoundException {
+    ResponseEntity<?> allCourses() {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(courseService.allCourses());
     }
@@ -30,7 +30,7 @@ public class CourseController {
 
     @PostMapping("/search")
     ResponseEntity<?> searchCourses(@RequestBody CourseRequest courseRequest) {
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .body(courseService.searchCourses(courseRequest));
+        courseService.searchCourses(courseRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

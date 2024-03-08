@@ -41,6 +41,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Search searchCourses(CourseRequest courseRequest) {
+        log.info("searchCourses: {}", courseRequest);
         Optional<Search> searchByName = searchRepo.findSearchByName(courseRequest.name());
         if (searchByName.isPresent())
         {
@@ -49,7 +50,8 @@ public class CourseServiceImpl implements CourseService {
 
         try {
             FCOScraper scraper = new FCOScraper();
-            List<Course> courses = scraper.findByName(courseRequest.name()).stream()
+            List<Course> courses = scraper.findByName(courseRequest.name())
+                    .stream()
                     .map((course) -> {
                         Optional<Course> courseByHref = courseRepo.findCourseByHref(course.getHref());
                         return courseByHref.orElse(course);
