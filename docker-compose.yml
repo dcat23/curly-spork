@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-dcat}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: youtube
+      POSTGRES_DB: spork
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -37,7 +37,6 @@ services:
       - spring
     depends_on:
       - zipkin
-
   apigw:
     image: macchiato23/apigw:curly-spork-0.0.3
     container_name: apigw
@@ -100,19 +99,19 @@ services:
       - postgres
 
   pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    networks:
-      - postgres
-    restart: unless-stopped
+   container_name: pgadmin
+   image: dpage/pgadmin4
+   environment:
+     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+     PGADMIN_CONFIG_SERVER_MODE: 'False'
+   volumes:
+     - pgadmin:/var/lib/pgadmin
+   ports:
+     - "5050:80"
+   networks:
+     - postgres
+   restart: unless-stopped
 
   #  notification:
   #    image: macchiato23/notification:latest
