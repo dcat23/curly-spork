@@ -1,9 +1,6 @@
 package life.macchiato.courses.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,7 +20,13 @@ public class Course {
     private String creator;
     private String href;
     private String image;
-    private String torrent;
+
+    @OneToOne(
+            mappedBy = "course",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private Torrent torrent;
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
