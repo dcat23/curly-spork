@@ -22,10 +22,11 @@ public class Torrent {
     private Course course;
 
     public Torrent() {
-        status = Status.NOT_STARTED;
+        status = Status.UNKNOWN;
     }
 
     public enum Status {
+        UNKNOWN,
         NOT_STARTED,
         NOT_FOUND,
         IN_PROGRESS,
