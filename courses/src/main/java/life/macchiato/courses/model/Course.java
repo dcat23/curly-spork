@@ -21,10 +21,7 @@ public class Course {
     private String href;
     private String image;
 
-    @OneToOne(
-            mappedBy = "course",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     private Torrent torrent;
 
     @UpdateTimestamp

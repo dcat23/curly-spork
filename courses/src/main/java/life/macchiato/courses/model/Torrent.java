@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
 @Data
+@Entity
 public class Torrent {
 
     @Id
@@ -16,10 +16,6 @@ public class Torrent {
     private String fileSize;
     @Enumerated
     private Status status;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Course course;
 
     public Torrent() {
         status = Status.UNKNOWN;

@@ -20,7 +20,6 @@ public class FCOScraper extends Scraper {
     private static final String articlesXpath = "//article[contains(@id, 'post')]";
     private static final String articleTitleSelector = ".entry-title a[rel=\"bookmark\"]";
     private static final Pattern creatorPattern = Pattern.compile("^\\[(.*?)\\] (.*?)$");
-
     private static final String torrentSizeXpath = "//div//p/strong[contains(text(), \"Size:\")]";
 
     public FCOScraper() {
