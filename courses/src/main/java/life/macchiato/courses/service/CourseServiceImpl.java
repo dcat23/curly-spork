@@ -104,7 +104,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     @Async("torrentExecutor")
-    public void findTorrents(Search search) {
+    public void findTorrent(Search search) {
         FCOScraper scraper = new FCOScraper();
         for (Course course : search.getCourses()) {
             Torrent torrent = course.getTorrent();
@@ -115,7 +115,6 @@ public class CourseServiceImpl implements CourseService {
                 } else {
                     torrent.setStatus(NOT_FOUND);
                 }
-                log.info(torrent.toString());
                 courseRepo.save(course);
             }
         }

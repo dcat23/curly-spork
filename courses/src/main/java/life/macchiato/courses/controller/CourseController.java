@@ -32,7 +32,7 @@ public class CourseController {
     @PostMapping("/search")
     ResponseEntity<?> searchCourses(@RequestBody CourseRequest courseRequest) {
         Search search = courseService.searchCourses(courseRequest);
-        courseService.findTorrents(search);
+        courseService.findTorrent(search);
         return ResponseEntity.status(HttpStatus.CREATED).body(search.toResponse());
     }
 
