@@ -1,13 +1,14 @@
 package life.macchiato.courses.util;
 
 import life.macchiato.courses.model.Course;
+import life.macchiato.courses.model.Torrent;
 import org.htmlunit.html.DomElement;
+import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlPage;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +43,7 @@ public class FCOScraper extends Scraper {
     }
 
 
-        public static Course asCourse(String image, String href, String title) {
+    public static Course asCourse(String image, String href, String title) {
 
         Matcher m = creatorPattern.matcher(title);
         if (m.find())
@@ -62,5 +63,19 @@ public class FCOScraper extends Scraper {
                 .image(image)
                 .creator("")
                 .build();
+    }
+
+    public Optional<Torrent> findTorrent(Course course) {
+        HtmlPage page = getPage(course.getHref());
+        Optional<HtmlAnchor> torrentAnchor = page.getAnchors().stream()
+                .filter(a -> a.getHrefAttribute().contains("torrent"))
+                .findFirst();
+
+        if (torrentAnchor.isPresent()) {
+            HtmlAnchor anchor = torrentAnchor.get();
+            course.setTorrent(anchor.getHrefAttribute());
+        }
+
+        return Optional.empty();
     }
 }
