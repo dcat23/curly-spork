@@ -1,19 +1,15 @@
 package life.macchiato.courses.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import life.macchiato.courses.dto.SearchResponse;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Search {
 
@@ -28,4 +24,7 @@ public class Search {
     @JoinColumn(name = "search_id", referencedColumnName = "id")
     private List<Course> courses;
 
+    public SearchResponse toResponse() {
+        return new SearchResponse(id, name, courses.size());
+    }
 }

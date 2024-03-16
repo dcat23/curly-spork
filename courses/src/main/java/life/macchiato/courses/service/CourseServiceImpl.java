@@ -1,9 +1,11 @@
 package life.macchiato.courses.service;
 
+import jakarta.transaction.Transactional;
 import life.macchiato.courses.dto.CourseRequest;
 import life.macchiato.courses.exception.ResourceNotFoundException;
 import life.macchiato.courses.model.Course;
 import life.macchiato.courses.model.Search;
+import life.macchiato.courses.model.Torrent;
 import life.macchiato.courses.repository.CourseRepository;
 import life.macchiato.courses.repository.SearchRepository;
 import life.macchiato.courses.util.FCOScraper;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static life.macchiato.courses.model.Torrent.Status.*;
 
 @Service
 @Slf4j
@@ -49,7 +53,7 @@ public class CourseServiceImpl implements CourseService {
             return searchByName.get();
         }
 
-        try {
+        try  {
             FCOScraper scraper = new FCOScraper();
             List<Course> courses = scraper.findByName(courseRequest.name())
                     .stream()
@@ -60,13 +64,12 @@ public class CourseServiceImpl implements CourseService {
 
 
             courseRepo.saveAll(courses);
-            Search search = Search.builder()
-                    .name(courseRequest.name())
-                    .courses(courses)
-                    .build();
-            searchRepo.save(search);
 
-            findTorrent(courses.toArray(Course[]::new));
+            Search search = new Search();
+            search.setCourses(courses);
+            search.setName(courseRequest.name());
+
+            searchRepo.save(search);
 
             return search;
         } catch (Exception e) {
@@ -74,19 +77,31 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
     @Async("torrentExecutor")
-    protected void findTorrent(Course... courses) {
+    public void findTorrent(Course... courses) {
         FCOScraper scraper = new FCOScraper();
         for (Course course : courses) {
-            log.info("finding torrent: {}", course.getName());
-            scraper.findTorrent(course);
+            Torrent torrent = course.getTorrent();
+            if (torrent.getStatus().equals(UNKNOWN))
+            {
+                if (!scraper.findTorrent(course)) {
+                    torrent.setStatus(NOT_FOUND);
+                } else {
+                    torrent.setStatus(NOT_STARTED);
+                    courseRepo.save(course);
+                    log.info("Found torrent for {} - {}", course.getName() ,course.getTorrent().getHref());
+                }
+
+            }
+
         }
 
-        courseRepo.saveAll(List.of(courses));
     }
 
     @Override
     public List<Search> allSearches() {
         return searchRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
     }
+
 }
