@@ -10,6 +10,7 @@ import life.macchiato.courses.util.FCOScraper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Search searchCourses(CourseRequest courseRequest) {
-        log.info("searchCourses: {}", courseRequest);
+        log.info("Search for courses: {}", courseRequest);
         Optional<Search> searchByName = searchRepo.findSearchByName(courseRequest.name());
         if (searchByName.isPresent())
         {
@@ -57,15 +58,35 @@ public class CourseServiceImpl implements CourseService {
                         return courseByHref.orElse(course);
                     }).toList();
 
+
             courseRepo.saveAll(courses);
             Search search = Search.builder()
                     .name(courseRequest.name())
                     .courses(courses)
                     .build();
             searchRepo.save(search);
+
+            findTorrent(courses.toArray(Course[]::new));
+
             return search;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Async("torrentExecutor")
+    protected void findTorrent(Course... courses) {
+        FCOScraper scraper = new FCOScraper();
+        for (Course course : courses) {
+            log.info("finding torrent: {}", course.getName());
+            scraper.findTorrent(course);
+        }
+
+        courseRepo.saveAll(List.of(courses));
+    }
+
+    @Override
+    public List<Search> allSearches() {
+        return searchRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
     }
 }
