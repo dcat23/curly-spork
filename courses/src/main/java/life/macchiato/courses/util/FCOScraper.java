@@ -1,10 +1,12 @@
 package life.macchiato.courses.util;
 
 import life.macchiato.courses.model.Course;
+import life.macchiato.courses.model.Course.CourseBuilder;
 import life.macchiato.courses.model.Torrent;
 import org.htmlunit.html.DomElement;
 import org.htmlunit.html.HtmlAnchor;
 import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlStrong;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,7 @@ public class FCOScraper extends Scraper {
     private static final String articleTitleSelector = ".entry-title a[rel=\"bookmark\"]";
     private static final Pattern creatorPattern = Pattern.compile("^\\[(.*?)\\] (.*?)$");
 
+    private static final String torrentSizeXpath = "//div//p/strong[contains(text(), \"Size:\")]";
 
     public FCOScraper() {
         super();
@@ -46,36 +49,39 @@ public class FCOScraper extends Scraper {
     public static Course asCourse(String image, String href, String title) {
 
         Matcher m = creatorPattern.matcher(title);
+        CourseBuilder builder = Course.builder()
+                .torrent(new Torrent())
+                .image(image)
+                .href(href)
+                .name(title)
+                .creator("");
+
         if (m.find())
         {
             String creator = m.group(1).trim();
             String name = m.group(2).trim();
-            return Course.builder()
-                    .href(href)
-                    .name(name)
-                    .image(image)
-                    .creator(creator)
-                    .build();
+            builder.name(name).creator(creator);
         }
-        return Course.builder()
-                .href(href)
-                .name(title)
-                .image(image)
-                .creator("")
-                .build();
+        return builder.build();
     }
 
-    public Optional<Torrent> findTorrent(Course course) {
+    public boolean findTorrent(Course course) {
         HtmlPage page = getPage(course.getHref());
         Optional<HtmlAnchor> torrentAnchor = page.getAnchors().stream()
                 .filter(a -> a.getHrefAttribute().contains("torrent"))
                 .findFirst();
 
-        if (torrentAnchor.isPresent()) {
-            HtmlAnchor anchor = torrentAnchor.get();
-            course.setTorrent(anchor.getHrefAttribute());
-        }
+        if (torrentAnchor.isEmpty()) return false;
 
-        return Optional.empty();
+        Torrent torrent = course.getTorrent();
+        torrent.setHref(torrentAnchor.get().getHrefAttribute());
+
+        String size = ((HtmlStrong) page.getByXPath(torrentSizeXpath).get(0))
+                .getTextContent()
+                .replace("Size: ", "")
+                .strip();
+        torrent.setFileSize(size);
+
+        return true;
     }
 }
