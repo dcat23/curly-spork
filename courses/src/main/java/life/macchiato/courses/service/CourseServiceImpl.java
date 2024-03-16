@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
         Optional<Search> byId = searchRepo.findById(searchId);
         if (byId.isEmpty())
         {
-            throw new ResourceNotFoundException(String.format("Resource with id '%d' not found", searchId));
+            throw new ResourceNotFoundException(String.format("Search with id '%d' not found", searchId));
         }
 
         return byId.get().getCourses();
@@ -42,6 +42,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> allCourses() {
         return courseRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    }
+
+    @Override
+    public List<Search> allSearches() {
+        return searchRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
     }
 
     @Override
@@ -59,8 +64,8 @@ public class CourseServiceImpl implements CourseService {
                     .stream()
                     .map((course) -> {
                         Optional<Course> courseByHref = courseRepo.findCourseByHref(course.getHref());
-                        return courseByHref.orElse(course);
-                    }).toList();
+                        return courseByHref.orElse(course);})
+                    .toList();
 
 
             courseRepo.saveAll(courses);
@@ -85,23 +90,34 @@ public class CourseServiceImpl implements CourseService {
             Torrent torrent = course.getTorrent();
             if (torrent.getStatus().equals(UNKNOWN))
             {
-                if (!scraper.findTorrent(course)) {
-                    torrent.setStatus(NOT_FOUND);
-                } else {
+                if (scraper.findTorrent(course)) {
                     torrent.setStatus(NOT_STARTED);
-                    courseRepo.save(course);
-                    log.info("Found torrent for {} - {}", course.getName() ,course.getTorrent().getHref());
+                } else {
+                    torrent.setStatus(NOT_FOUND);
                 }
-
             }
-
         }
 
+        log.info(courseRepo.saveAll(List.of(courses)).toString());
     }
 
     @Override
-    public List<Search> allSearches() {
-        return searchRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    @Transactional
+    @Async("torrentExecutor")
+    public void findTorrents(Search search) {
+        FCOScraper scraper = new FCOScraper();
+        for (Course course : search.getCourses()) {
+            Torrent torrent = course.getTorrent();
+            if (torrent.getStatus().equals(UNKNOWN))
+            {
+                if (scraper.findTorrent(course)) {
+                    torrent.setStatus(NOT_STARTED);
+                } else {
+                    torrent.setStatus(NOT_FOUND);
+                }
+                log.info(torrent.toString());
+                courseRepo.save(course);
+            }
+        }
     }
-
 }

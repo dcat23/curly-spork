@@ -1,5 +1,6 @@
 package life.macchiato.courses.service;
 
+import jakarta.transaction.Transactional;
 import life.macchiato.courses.dto.CourseRequest;
 import life.macchiato.courses.exception.ResourceNotFoundException;
 import life.macchiato.courses.model.Course;
@@ -19,4 +20,7 @@ public interface CourseService {
 
     @Async("torrentExecutor")
     void findTorrent(Course... courses);
+
+    @Async("torrentExecutor")
+    void findTorrents(Search search);
 }
