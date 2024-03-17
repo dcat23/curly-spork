@@ -2,6 +2,8 @@ package life.macchiato.courses.service;
 
 import jakarta.transaction.Transactional;
 import life.macchiato.courses.dto.CourseRequest;
+import life.macchiato.courses.dto.CourseResponse;
+import life.macchiato.courses.dto.SearchResponse;
 import life.macchiato.courses.exception.ResourceNotFoundException;
 import life.macchiato.courses.model.Course;
 import life.macchiato.courses.model.Search;
@@ -29,24 +31,30 @@ public class CourseServiceImpl implements CourseService {
     SearchRepository searchRepo;
 
     @Override
-    public List<Course> coursesFromSearch(Long searchId) throws ResourceNotFoundException {
+    public List<CourseResponse> coursesFromSearch(Long searchId) throws ResourceNotFoundException {
         Optional<Search> byId = searchRepo.findById(searchId);
         if (byId.isEmpty())
         {
             throw new ResourceNotFoundException(String.format("Search with id '%d' not found", searchId));
         }
 
-        return byId.get().getCourses();
+        return byId.get().getCourses().stream()
+                .map(Course::toResponse)
+                .toList();
     }
 
     @Override
-    public List<Course> allCourses() {
-        return courseRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    public List<CourseResponse> allCourses() {
+        return courseRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt")).stream()
+                .map(Course::toResponse)
+                .toList();
     }
 
     @Override
-    public List<Search> allSearches() {
-        return searchRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    public List<SearchResponse> allSearches() {
+        return searchRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt")).stream()
+                .map(Search::toResponse)
+                .toList();
     }
 
     @Override

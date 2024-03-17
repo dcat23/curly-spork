@@ -1,6 +1,7 @@
 package life.macchiato.courses.model;
 
 import jakarta.persistence.*;
+import life.macchiato.courses.dto.CourseResponse;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,4 +27,14 @@ public class Course {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public CourseResponse toResponse() {
+        return new CourseResponse(
+                id,
+                name,
+                creator,
+                torrent.getFileSize(),
+                torrent.getStatus()
+        );
+    }
 }
