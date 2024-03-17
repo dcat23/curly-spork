@@ -127,4 +127,15 @@ public class CourseServiceImpl implements CourseService {
             }
         }
     }
+
+    @Override
+    public Course courseFromId(Long courseId) throws ResourceNotFoundException {
+        Optional<Course> byId = courseRepo.findById(courseId);
+        if (byId.isEmpty())
+        {
+            throw new ResourceNotFoundException(String.format("Course with id '%d' not found", courseId));
+        }
+
+        return byId.get();
+    }
 }

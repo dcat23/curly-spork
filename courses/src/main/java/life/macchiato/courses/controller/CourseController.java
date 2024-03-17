@@ -23,6 +23,13 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(courseService.allCourses());
     }
+
+    @GetMapping("/{id}")
+    ResponseEntity<?> courseFromId(@PathVariable(name = "id") Long courseId) throws ResourceNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(courseService.courseFromId(courseId));
+    }
+
     @GetMapping("/search/{id}")
     ResponseEntity<?> coursesFromSearch(@PathVariable(name = "id") Long searchId) throws ResourceNotFoundException {
             return ResponseEntity.status(HttpStatus.OK)

@@ -24,4 +24,6 @@ public interface CourseService {
 
     @Async("torrentExecutor")
     void findTorrent(Search search);
+
+    Course courseFromId(Long courseId) throws ResourceNotFoundException;
 }
