@@ -90,7 +90,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     volumes:
-      - courses:/app/data
+      - courses:/app/trans
     networks:
       - spring
       - postgres

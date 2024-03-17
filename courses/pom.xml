@@ -32,6 +32,11 @@
             <version>3.6.0</version>
         </dependency>
         <dependency>
+            <groupId>pro.macchiato</groupId>
+            <artifactId>transmission</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
