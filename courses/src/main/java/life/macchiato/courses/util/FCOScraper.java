@@ -16,7 +16,7 @@ public class FCOScraper extends Scraper {
 
     private static final String articlesXpath = "//article[contains(@id, 'post')]";
     private static final String articleTitleSelector = ".entry-title a[rel=\"bookmark\"]";
-    private static final Pattern creatorPattern = Pattern.compile("^\\[(.*?)\\] (.*?)$");
+    private static final Pattern creatorPattern = Pattern.compile("^\\[(.*?)] (.*?)$");
     private static final String torrentSizeXpath = "//div//p/strong[contains(text(), \"Size:\")]";
     private static final String sourceUrlXpath = "//div//p/u[contains(text(), \"Course Source\")]";
 
@@ -73,22 +73,25 @@ public class FCOScraper extends Scraper {
         Torrent torrent = course.getTorrent();
         torrent.setHref(torrentAnchor.get().getHrefAttribute());
 
-        String size = ((HtmlStrong) page.getByXPath(torrentSizeXpath).get(0))
-                .getTextContent()
-                .replace("Size: ", "")
-                .strip();
-        torrent.setFileSize(size);
+        try {
+            String size = ((HtmlStrong) page.getByXPath(torrentSizeXpath).get(0))
+                    .getTextContent()
+                    .replace("Size: ", "")
+                    .strip();
+            torrent.setFileSize(size);
+        } catch (IndexOutOfBoundsException e) {
+            torrent.setFileSize("");
+        }
 
-        List<HtmlUnderlined> sourceTags = page.getByXPath(sourceUrlXpath);
-        if (!sourceTags.isEmpty())
+        try
         {
-            String sourceUrl = sourceTags.get(0)
+            String sourceUrl = ((HtmlUnderlined) page.getByXPath(sourceUrlXpath).get(0))
                     .getNextSibling()
                     .getTextContent()
                     .replaceAll(":\\s*(https?://\\S+)", "$1");
             torrent.setSource(sourceUrl);
 
-        } else {
+        } catch (IndexOutOfBoundsException e) {
             torrent.setSource("");
         }
 

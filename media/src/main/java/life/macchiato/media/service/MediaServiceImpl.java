@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +72,6 @@ public class MediaServiceImpl implements MediaService {
             try {
                 v = YtDlp.getVideoInfo(url.toString());
             } catch (YtDlpException e) {
-                System.out.println();
                 throw new RuntimeException(e);
             }
 

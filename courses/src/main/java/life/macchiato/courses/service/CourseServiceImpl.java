@@ -11,6 +11,7 @@ import life.macchiato.courses.model.Torrent;
 import life.macchiato.courses.repository.CourseRepository;
 import life.macchiato.courses.repository.SearchRepository;
 import life.macchiato.courses.util.FCOScraper;
+import life.macchiato.courses.util.TransCli;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -137,5 +138,38 @@ public class CourseServiceImpl implements CourseService {
         }
 
         return byId.get();
+    }
+
+    @Override
+    @Transactional
+    @Async("torrentExecutor")
+    public void executeTrans(Course course) {
+        Torrent torrent = course.getTorrent();
+
+        TransCli trans = new TransCli(torrent.getHref());
+        switch (torrent.getStatus())
+        {
+            case COMPLETED :
+            case IN_PROGRESS:
+                log.info("{}: {}", torrent.getStatus().name(), course.getName());
+                return;
+            default:
+        }
+
+
+        try {
+            torrent.setStatus(IN_PROGRESS);
+            courseRepo.save(course);
+
+            trans.execute();
+
+            torrent.setStatus(COMPLETED);
+        }  catch (Exception e) {
+            log.error(e.getMessage());
+            torrent.setStatus(NOT_STARTED);
+            throw new RuntimeException(e);
+        }
+
+        courseRepo.save(course);
     }
 }
