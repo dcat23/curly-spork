@@ -50,21 +50,21 @@ services:
       - zipkin
       - eureka-server
 
-  youtube:
-    image: macchiato23/youtube:latest
-    container_name: youtube
-    ports:
-      - "8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    volumes:
-      - "./tokens:/tokens"
-    networks:
-      - spring
-      - postgres
-    depends_on:
-      - zipkin
-      - postgres
+#  youtube:
+#    image: macchiato23/youtube:curly-spork-0.0.3
+#    container_name: youtube
+#    ports:
+#      - "8080"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    volumes:
+#      - "./tokens:/tokens"
+#    networks:
+#      - spring
+#      - postgres
+#    depends_on:
+#      - zipkin
+#      - postgres
 
   media:
     image: macchiato23/media:latest
@@ -83,7 +83,7 @@ services:
       - postgres
 
   courses:
-    image: macchiato23/courses:curly-spork-0.0.3
+    image: macchiato23/courses:curly-spork-0.0.4
     container_name: courses
     ports:
       - "8080"
@@ -98,20 +98,20 @@ services:
       - zipkin
       - postgres
 
-  pgadmin:
-   container_name: pgadmin
-   image: dpage/pgadmin4
-   environment:
-     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-     PGADMIN_CONFIG_SERVER_MODE: 'False'
-   volumes:
-     - pgadmin:/var/lib/pgadmin
-   ports:
-     - "5050:80"
-   networks:
-     - postgres
-   restart: unless-stopped
+#  pgadmin:
+#   container_name: pgadmin
+#   image: dpage/pgadmin4
+#   environment:
+#     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+#     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#     PGADMIN_CONFIG_SERVER_MODE: 'False'
+#   volumes:
+#     - pgadmin:/var/lib/pgadmin
+#   ports:
+#     - "5050:80"
+#   networks:
+#     - postgres
+#   restart: unless-stopped
 
   #  notification:
   #    image: macchiato23/notification:latest

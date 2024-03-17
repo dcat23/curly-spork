@@ -5,7 +5,7 @@
 
 	<groupId>life.macchiato</groupId>
 	<artifactId>CurlySpork</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<description>CurlySpork</description>
 	<packaging>pom</packaging>
 
