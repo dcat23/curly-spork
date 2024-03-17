@@ -3,10 +3,7 @@ package life.macchiato.courses.util;
 import life.macchiato.courses.model.Course;
 import life.macchiato.courses.model.Course.CourseBuilder;
 import life.macchiato.courses.model.Torrent;
-import org.htmlunit.html.DomElement;
-import org.htmlunit.html.HtmlAnchor;
-import org.htmlunit.html.HtmlPage;
-import org.htmlunit.html.HtmlStrong;
+import org.htmlunit.html.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +18,7 @@ public class FCOScraper extends Scraper {
     private static final String articleTitleSelector = ".entry-title a[rel=\"bookmark\"]";
     private static final Pattern creatorPattern = Pattern.compile("^\\[(.*?)\\] (.*?)$");
     private static final String torrentSizeXpath = "//div//p/strong[contains(text(), \"Size:\")]";
+    private static final String sourceUrlXpath = "//div//p/u[contains(text(), \"Course Source\")]";
 
     public FCOScraper() {
         super();
@@ -80,6 +78,19 @@ public class FCOScraper extends Scraper {
                 .replace("Size: ", "")
                 .strip();
         torrent.setFileSize(size);
+
+        List<HtmlUnderlined> sourceTags = page.getByXPath(sourceUrlXpath);
+        if (!sourceTags.isEmpty())
+        {
+            String sourceUrl = sourceTags.get(0)
+                    .getNextSibling()
+                    .getTextContent()
+                    .replaceAll(":\\s*(https?://\\S+)", "$1");
+            torrent.setSource(sourceUrl);
+
+        } else {
+            torrent.setSource("");
+        }
 
         return true;
     }

@@ -14,6 +14,7 @@ public class Torrent {
     private Long id;
     private String href;
     private String fileSize;
+    private String source;
     @Enumerated
     private Status status;
 

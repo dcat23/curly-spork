@@ -41,13 +41,12 @@ class CourseServiceTest {
         closeable.close();
     }
 
-    @Test @Disabled
+    @Test
     void searchCoursesShouldWork() {
         Search response = service.searchCourses(request);
 
         assertThat(response.getName()).isEqualTo(request.name());
         assertThat(response.getCourses().isEmpty()).isFalse();
-
     }
 
     @Test @Disabled

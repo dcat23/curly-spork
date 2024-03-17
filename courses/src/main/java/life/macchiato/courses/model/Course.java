@@ -34,7 +34,8 @@ public class Course {
                 name,
                 creator,
                 torrent.getFileSize(),
-                torrent.getStatus()
+                torrent.getStatus(),
+                torrent.getSource()
         );
     }
 }
