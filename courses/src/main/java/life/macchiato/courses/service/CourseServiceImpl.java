@@ -1,6 +1,5 @@
 package life.macchiato.courses.service;
 
-import jakarta.transaction.Transactional;
 import life.macchiato.courses.dto.CourseRequest;
 import life.macchiato.courses.dto.CourseResponse;
 import life.macchiato.courses.dto.SearchResponse;
@@ -112,22 +111,23 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
     @Async("torrentExecutor")
     public void findTorrent(Search search) {
         FCOScraper scraper = new FCOScraper();
-        for (Course course : search.getCourses()) {
-            Torrent torrent = course.getTorrent();
-            if (torrent.getStatus().equals(UNKNOWN))
-            {
-                if (scraper.findTorrent(course)) {
-                    torrent.setStatus(NOT_STARTED);
-                } else {
-                    torrent.setStatus(NOT_FOUND);
-                }
-                courseRepo.save(course);
-            }
-        }
+
+        search.getCourses().parallelStream()
+                .forEach(course -> {
+                    Torrent torrent = course.getTorrent();
+                    if (torrent.getStatus().equals(UNKNOWN))
+                    {
+                        if (scraper.findTorrent(course)) {
+                            torrent.setStatus(NOT_STARTED);
+                        } else {
+                            torrent.setStatus(NOT_FOUND);
+                        }
+                        courseRepo.save(course);
+                    }
+                });
     }
 
     @Override
@@ -165,7 +165,7 @@ public class CourseServiceImpl implements CourseService {
         try {
 
             CliResult result = trans.execute();
-            log.info("{}", result);
+            log.info("{} {}", result.elapsed(), result.out());
 
             torrent.setStatus(COMPLETED);
             courseRepo.save(course);
@@ -176,6 +176,6 @@ public class CourseServiceImpl implements CourseService {
             throw new RuntimeException(e);
         }
 
-        log.info("done: {}", course.getName());
+        log.info("{}: {}", torrent.getStatus().name(), course.getName());
     }
 }
