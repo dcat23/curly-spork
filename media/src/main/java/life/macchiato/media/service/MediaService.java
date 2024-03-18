@@ -20,7 +20,6 @@ public interface MediaService {
 
     Media requestVideo(MediaRequest mediaRequest) throws Exception;
 
-    @Transactional
     @Async("downloadExecutor")
     void execute(Media media);
 

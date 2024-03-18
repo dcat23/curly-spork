@@ -92,7 +92,6 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @Transactional
     @Async("downloadExecutor")
     public void execute(Media media)  {
 

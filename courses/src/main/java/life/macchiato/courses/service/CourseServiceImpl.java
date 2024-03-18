@@ -168,8 +168,10 @@ public class CourseServiceImpl implements CourseService {
             default:
         }
 
+        log.info("execute {}", course.toResponse());
         TransCli trans = new TransCli(torrent.getHref());
         trans.setLabel(course.getName());
+        trans.addOption("--no-downlimit");
 
         torrent.setStatus(IN_PROGRESS);
         courseRepo.save(course);
@@ -177,7 +179,7 @@ public class CourseServiceImpl implements CourseService {
         try {
 
             CliResult result = trans.execute();
-            log.info("{} {}", result.elapsed(), result.out());
+            log.info("{} {}", result.elapsed(), result.exitCode());
 
             torrent.setStatus(COMPLETED);
             courseRepo.save(course);
