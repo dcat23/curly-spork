@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import pro.macchiato.cli.CliResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -141,14 +142,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
     @Async("torrentExecutor")
     public void executeTrans(Course course) {
         Torrent torrent = course.getTorrent();
 
-        TransCli trans = new TransCli(torrent.getHref());
         switch (torrent.getStatus())
         {
+            case NOT_FOUND:
             case COMPLETED :
             case IN_PROGRESS:
                 log.info("{}: {}", torrent.getStatus().name(), course.getName());
@@ -156,20 +156,26 @@ public class CourseServiceImpl implements CourseService {
             default:
         }
 
+        TransCli trans = new TransCli(torrent.getHref());
+        trans.setLabel(course.getName());
+
+        torrent.setStatus(IN_PROGRESS);
+        courseRepo.save(course);
 
         try {
-            torrent.setStatus(IN_PROGRESS);
-            courseRepo.save(course);
 
-            trans.execute();
+            CliResult result = trans.execute();
+            log.info("{}", result);
 
             torrent.setStatus(COMPLETED);
+            courseRepo.save(course);
         }  catch (Exception e) {
             log.error(e.getMessage());
             torrent.setStatus(NOT_STARTED);
+            courseRepo.save(course);
             throw new RuntimeException(e);
         }
 
-        courseRepo.save(course);
+        log.info("done: {}", course.getName());
     }
 }

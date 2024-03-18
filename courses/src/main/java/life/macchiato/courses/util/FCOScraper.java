@@ -19,6 +19,8 @@ public class FCOScraper extends Scraper {
     private static final Pattern creatorPattern = Pattern.compile("^\\[(.*?)] (.*?)$");
     private static final String torrentSizeXpath = "//div//p/strong[contains(text(), \"Size:\")]";
     private static final String sourceUrlXpath = "//div//p/u[contains(text(), \"Course Source\")]";
+    private static final Pattern torrentPattern = Pattern.compile("^.*(?<url>http.*\\.torrent).*$");
+    private static final String GROUP_TORRENT_URL = "url";
 
     public FCOScraper() {
         super();
@@ -71,7 +73,11 @@ public class FCOScraper extends Scraper {
         if (torrentAnchor.isEmpty()) return false;
 
         Torrent torrent = course.getTorrent();
-        torrent.setHref(torrentAnchor.get().getHrefAttribute());
+        String href = torrentAnchor.get().getHrefAttribute();
+        Matcher m = torrentPattern.matcher(href);
+        if (!m.matches()) return false;
+
+        torrent.setHref(m.group(GROUP_TORRENT_URL));
 
         try {
             String size = ((HtmlStrong) page.getByXPath(torrentSizeXpath).get(0))

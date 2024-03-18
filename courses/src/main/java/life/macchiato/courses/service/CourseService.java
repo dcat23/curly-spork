@@ -28,7 +28,6 @@ public interface CourseService {
 
     Course courseFromId(Long courseId) throws ResourceNotFoundException;
 
-    @Transactional
     @Async("torrentExecutor")
     void executeTrans(Course course) throws ResourceNotFoundException;
 }
