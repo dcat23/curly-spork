@@ -4,6 +4,7 @@ import life.macchiato.courses.dto.CourseRequest;
 import life.macchiato.courses.exception.ResourceNotFoundException;
 import life.macchiato.courses.model.Course;
 import life.macchiato.courses.model.Search;
+import life.macchiato.courses.model.Torrent;
 import life.macchiato.courses.service.CourseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,12 @@ public class CourseController {
     CourseService courseService;
 
     @GetMapping
-    ResponseEntity<?> allCourses() {
+    ResponseEntity<?> allCourses(
+            @RequestParam(required = false) Torrent.Status status,
+            @RequestParam(required = false) String name
+    ) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(courseService.allCourses());
+                    .body(courseService.allCourses(status, name));
     }
 
     @GetMapping("/{id}")

@@ -45,8 +45,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponse> allCourses() {
-        return courseRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt")).stream()
+    public List<CourseResponse> allCourses(Torrent.Status status, String name) {
+        return courseRepo.findAll(Sort.by(Sort.Direction.DESC, "updatedAt")).parallelStream()
+                .filter(course -> {
+                    if(status != null) {
+                        if (!course.getTorrent().getStatus().equals(status)) return false;
+                    }
+                    if (name != null) {
+
+                        if (course.getName().toLowerCase().contains(name.toLowerCase().strip())) return true;
+                        else return course.getCreator().toLowerCase().contains(name.toLowerCase().strip());
+                    }
+
+                    return true;
+                })
                 .map(Course::toResponse)
                 .toList();
     }
