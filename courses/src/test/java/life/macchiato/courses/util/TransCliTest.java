@@ -56,13 +56,10 @@ class TransCliTest {
 
 
         assertThat(callback.getProgress()).isEqualTo(95);
-//        assertThat(callback.getRuntime()).isEqualTo(12.5f);
-//        assertThat(callback.getPeers()).isEqualTo("4 of 4");
     }
 
     @Test
     void shouldSetOutDirectory() {
-        cli.setOutDirectory("downloads");
         File outDir = new File(cli.getOutDirectory());
         assertThat(outDir.exists()).isTrue();
     }

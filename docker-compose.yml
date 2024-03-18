@@ -4,7 +4,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:alpine3.19
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-dcat}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
 
   zipkin:
-    image: openzipkin/zipkin
+    image: openzipkin/zipkin:3.1.0
     container_name: zipkin
     ports:
       - "9411:9411"
@@ -37,6 +37,7 @@ services:
       - spring
     depends_on:
       - zipkin
+
   apigw:
     image: macchiato23/apigw:curly-spork-0.0.3
     container_name: apigw
@@ -66,31 +67,35 @@ services:
 #      - zipkin
 #      - postgres
 
-  media:
-    image: macchiato23/media:latest
-    container_name: media
-    ports:
-      - "8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    volumes:
-      - media:/tmp
-    networks:
-      - spring
-      - postgres
-    depends_on:
-      - zipkin
-      - postgres
+#  media:
+#    image: macchiato23/media:latest
+#    container_name: media
+#    ports:
+#      - "8080"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    volumes:
+#      - media:/tmp
+#    networks:
+#      - spring
+#      - postgres
+#    depends_on:
+#      - zipkin
+#      - postgres
 
   courses:
     image: macchiato23/courses:curly-spork-0.0.4
     container_name: courses
     ports:
-      - "8080"
+      - "8082:8080"
+      - "9091:9091"
+      - "51413:51413"
+      - "51413:51413/udp"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     volumes:
-      - courses:/app/trans
+      - ./trans:/root/Downloads
+      - ./trans/config:/root/.config/transmission
     networks:
       - spring
       - postgres

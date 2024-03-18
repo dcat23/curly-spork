@@ -19,10 +19,11 @@ public class Torrent {
     private Status status;
 
     public Torrent() {
-        status = Status.UNKNOWN;
+        status = Status.PENDING;
     }
 
     public enum Status {
+        PENDING,
         UNKNOWN,
         NOT_STARTED,
         NOT_FOUND,

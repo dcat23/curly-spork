@@ -28,7 +28,6 @@ public class TransCli extends Cli {
         super("transmission-cli");
         this.torrentFile = Objects.requireNonNull(torrentFile);
         addOption(this.torrentFile);
-        setOutDirectory("trans");
     }
 
     public String getOutDirectory() {
@@ -94,7 +93,9 @@ public class TransCli extends Cli {
                 }
             } else if (line.startsWith("Seeding")){
                 this.progress = 100;
-                log.info("line: '{}'",line);
+                log.info(line);
+            } else {
+                log.info("other: {}",line);
             }
         }
 

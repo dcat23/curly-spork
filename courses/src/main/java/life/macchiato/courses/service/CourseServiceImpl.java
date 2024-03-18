@@ -109,7 +109,7 @@ public class CourseServiceImpl implements CourseService {
         FCOScraper scraper = new FCOScraper();
         for (Course course : courses) {
             Torrent torrent = course.getTorrent();
-            if (torrent.getStatus().equals(UNKNOWN))
+            if (torrent.getStatus().equals(PENDING))
             {
                 if (scraper.findTorrent(course)) {
                     torrent.setStatus(NOT_STARTED);
@@ -130,7 +130,7 @@ public class CourseServiceImpl implements CourseService {
         search.getCourses().parallelStream()
                 .forEach(course -> {
                     Torrent torrent = course.getTorrent();
-                    if (torrent.getStatus().equals(UNKNOWN))
+                    if (torrent.getStatus().equals(PENDING))
                     {
                         if (scraper.findTorrent(course)) {
                             torrent.setStatus(NOT_STARTED);
@@ -179,10 +179,14 @@ public class CourseServiceImpl implements CourseService {
         try {
 
             CliResult result = trans.execute();
-            log.info("{} {}", result.elapsed(), result.exitCode());
-
-            torrent.setStatus(COMPLETED);
+            log.info("{}", result.elapsed());
+            if (result.exitCode() <= 0) {
+                torrent.setStatus(COMPLETED);
+            } else {
+                torrent.setStatus(UNKNOWN);
+            }
             courseRepo.save(course);
+
         }  catch (Exception e) {
             log.error(e.getMessage());
             torrent.setStatus(NOT_STARTED);
