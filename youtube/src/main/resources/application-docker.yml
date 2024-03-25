@@ -8,7 +8,7 @@ spring:
   datasource:
     username: ${POSTGRES_USER:dcat}
     password: ${POSTGRES_PASSWORD:password}
-    url: jdbc:postgresql://postgres:5432/youtube
+    url: jdbc:postgresql://postgres:5432/spork
 
   jpa:
     hibernate:
@@ -18,3 +18,19 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+
+  instance:
+    instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0

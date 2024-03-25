@@ -5,26 +5,25 @@
 
 	<groupId>life.macchiato</groupId>
 	<artifactId>CurlySpork</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4</version>
 	<description>CurlySpork</description>
 	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.2</version>
+		<version>3.2.3</version>
 	</parent>
 
 	<name>CurlySpork</name>
-	<url>https://www.macchiato.life</url>
-	<modules>
-		<module>youtube</module>
-	</modules>
+	<url>https://github.com/dcat23/curly-spork</url>
 
 	<properties>
 		<java.version>17</java.version>
-		<spring.boot.version>3.2.2</spring.boot.version>
-		<image>macchiato23/cs-${project.artifactId}:${project.version}</image>
+		<spring.boot.version>3.2.3</spring.boot.version>
+		<spring.cloud.version>2023.0.0</spring.cloud.version>
+		<spring.cloud.gateway.version>4.1.1</spring.cloud.gateway.version>
+		<image>macchiato23/${project.artifactId}:curly-spork-${project.version}</image>
 	</properties>
 
 	<dependencyManagement>
@@ -35,6 +34,27 @@
 				<version>${spring.boot.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-gateway-dependencies</artifactId>
+				<version>${spring.cloud.gateway.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>1.19.6</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -55,6 +75,38 @@
 			<artifactId>assertj-core</artifactId>
 			<version>3.4.1</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>5.11.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.zipkin.reporter2</groupId>
+			<artifactId>zipkin-reporter-brave</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -80,7 +132,7 @@
 					<version>3.3.2</version>
 					<configuration>
 						<from>
-							<image>eclipse-temurin:17.0.10_7-jre</image>
+							<image>eclipse-temurin:21.0.2_13-jre-alpine</image>
 							<platforms>
 								<platform>
 									<architecture>arm64</architecture>
@@ -102,5 +154,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 </project>

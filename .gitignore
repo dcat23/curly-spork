@@ -1,4 +1,3 @@
-HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -35,3 +34,7 @@ build/
 .env
 
 tokens
+.mvn
+downloads
+tmp
+trans
